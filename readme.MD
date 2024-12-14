@@ -49,7 +49,7 @@ jobs:
 
 ## Design a high-level architecture diagram showing the networking setup
 
-![highlevel_architecure](`images/highlevel architecture.drawio.png`)
+(`images/highlevel architecture.drawio.png`)
 
 ## How you would secure the setup.
 - Sensitive data and services (Cloud SQL and Redis) are isolated in a separate VPC, reducing the risk of lateral attacks.
