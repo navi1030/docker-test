@@ -67,7 +67,7 @@ resource "google_storage_bucket_iam_binding" "bucket_binding" {
 
 terraform {
   backend "gcs" {
-    bucket  = google_storage_bucket.terraform_state.name
+    bucket  = "terraform-codimite"
     prefix  = "terraform/state"
   }
 }
