@@ -30,7 +30,7 @@ resource "google_container_node_pool" "general_node_pool" {
   location   = var.region
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type = "c4a-standard-1"
     oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
@@ -43,7 +43,7 @@ resource "google_container_node_pool" "cpu_intensive_node_pool" {
   location   = var.region
 
   node_config {
-    machine_type = "c2-standard-4"
+    machine_type = "c4a-standard-1"
     oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
