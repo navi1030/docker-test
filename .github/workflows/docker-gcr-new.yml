@@ -28,7 +28,8 @@
           
 
       - name: setup google sdk
-        run: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v1
+             
 
       - name: Configure Docker Client
         run: gcloud auth configure-docker ${{ env.REGION}}-docker.pkg.dev --quiet
@@ -37,7 +38,7 @@
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
-          context:
+          context: .
           push: true
           tags: ${{ env.IMAGE_TAG }}
    
