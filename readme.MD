@@ -86,3 +86,23 @@ jobs:
           ignore-unfixed: false 
 ```
 
+# Problem-Solving & Troubleshooting Scenario
+
+## Explain your approach to troubleshooting the issue.
+
+- Start by examining the logs of the application pods to identify any specific error messages or patterns that indicate the nature of the network timeout.
+- Use kubectl get events to check for any Kubernetes events that might indicate issues with pod scheduling, networking, or resource allocation.
+- Confirm the status of the pods using kubectl get pods to ensure they are running as expected.
+- Verify the network configuration, including VPC settings, firewall rules, and Cloud SQL instance settings.
+- Use tools like kubectl exec to run connectivity tests from within the application pods to the Cloud SQL instance. For example, use ping or curl to check if the instance is reachable.
+- Verify that the DNS resolution between the application pods and CloudSQL is working correctly, especially if you are using the CloudSQL instance's hostname for connections.
+- Verify that firewall rules allow traffic from GKE clusters to Cloud SQL. Check for any recent changes in firewall configurations that might have impacted connectivity.
+- Check if the application pods are hitting resource limits (CPU/memory) which could lead to performance degradation.
+- Review Cloud SQL metrics for any signs of resource exhaustion, such as high CPU usage or connection limits being reached.
+
+## Describe tools and steps you would use to resolve the network timeout and prevent future occurrences.
+
+- Scale up the GKE cluster if necessary to ensure that there are enough resources for the pods to run smoothly.
+- Add autoscaling policies to automatically adjust the number of nodes based on resource usage.
+- Enable CloudSQL High Availability  for automatic failover in case of any outages, reducing the risk of downtime.
+- Set up monitoring for network performance using tools like Cloud Monitoring and Cloud Logging to track latency, packet loss, or network errors between GKE and CloudSQL.
