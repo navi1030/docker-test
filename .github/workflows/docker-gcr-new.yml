@@ -1,0 +1,44 @@
+---
+  name: Build and Push Python Image to Google Cloud Platform
+  on:
+    push:
+      branches: [ main ]
+
+  env:
+    REGION: us-central1
+    PROJECT: codimite-assignment-444413
+    REPO: quickstart-docker-repo
+    IMAGE: my-flask-app
+  jobs:
+    build-push:
+      name: Build and Push to GCP
+      runs-on: ubuntu-latest
+      
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: set vars
+        run: echo "IMAGE_TAG=$REGION-docker.pkg.dev/$PROJECT/$REPO/$IMAGE"  >>$GITHUB_ENV"
+
+  
+      - uses: google-github-actions/auth@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          
+
+      - name: setup google sdk
+        run: google-github-actions/setup-gcloud@v1
+
+      - name: Configure Docker Client
+        run: gcloud auth configure-docker ${{ env.REGION}}-docker.pkg.dev --quiet
+
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context:
+          push: true
+          tags: ${{ env.IMAGE_TAG }}
+   
+         
