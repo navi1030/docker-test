@@ -19,12 +19,12 @@
         uses: actions/checkout@v4
 
       - name: set vars
-        run: echo "IMAGE_TAG=$REGION-docker.pkg.dev/$PROJECT/$REPO/$IMAGE"  >>$GITHUB_ENV"
+        run: echo "IMAGE_TAG=$REGION-docker.pkg.dev/$PROJECT/$REPO/$IMAGE" >> $GITHUB_ENV
 
   
       - uses: google-github-actions/auth@v1
         with:
-          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
           
 
       - name: setup google sdk
