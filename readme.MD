@@ -49,7 +49,7 @@ jobs:
 
 ## Design a high-level architecture diagram showing the networking setup
 
-(`https://github.com/navi1030/docker-test/blob/9e7ac347d0c368f78bf2e21e01f2008f0e1cb1dc/images/highlevelarchitecture.png`)
+![alt text](https://github.com/navi1030/docker-test/blob/9e7ac347d0c368f78bf2e21e01f2008f0e1cb1dc/images/highlevelarchitecture.png)
 
 ## How you would secure the setup.
 - Sensitive data and services (Cloud SQL and Redis) are isolated in a separate VPC, reducing the risk of lateral attacks.
