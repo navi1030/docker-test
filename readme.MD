@@ -1,4 +1,9 @@
 # Terraform & Infrastructure-as-Code (IaC)
+
+## Create the VPC and subnets, Create the GKE cluster with 2 node pools, Store Terraform states in a GCS bucket.
+
+### The code is in the terraform folder
+
 ## Explain how you would automate the process using TFActions
 
 ```yaml
@@ -49,7 +54,7 @@ jobs:
 
 ## Design a high-level architecture diagram showing the networking setup
 
-![alt text](https://github.com/navi1030/docker-test/blob/9e7ac347d0c368f78bf2e21e01f2008f0e1cb1dc/images/highlevelarchitecture.png)
+![alt text](https://github.com/navi1030/codimite_assignment/blob/9bdda3f9fe05a4929001880343dc2bc0dd3b8a45/images/highlevelarchitecture.png)
 
 ## How you would secure the setup.
 - Sensitive data and services (Cloud SQL and Redis) are isolated in a separate VPC, reducing the risk of lateral attacks.
@@ -69,6 +74,56 @@ jobs:
 - Deploy regional GKE clusters to ensure high availability while avoiding cross-region traffic costs.
 - Use read replicas in the same region to offload read traffic from the primary database, reducing the load on more expensive primary instances.
 - Use memory-optimized tiers that match your application's caching needs. Avoid over-provisioning Redis instances.
+
+# CI/CD & GitHub Actions
+
+## Write a sample GitHub Actions workflow YAML file to:Build and push the Docker image to GCR,Include steps for linting and running tests.
+
+### The code is in the .github\workflows\docker-gcr-new.yml file
+
+## Explain how you configure the deployment through ArgoCD
+
+- Step 1: Install ArgoCD in GKE
+```Bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+-  step 2: Expose the ArgoCD Server
+```Bash
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
+
+- step 3: Retrieve Default Admin Password
+```Bash
+kubectl -n argocd get secret argocd-initial-admin-secret \
+          -o jsonpath="{.data.password}" | base64 -d; echo
+```
+- step 4: Save Credentials in GitHub Secrets
+- setp 5: Prepare Kubernetes Manifests
+- step 5: Automating Cluster Registration and deployment in GitHub Workflow
+```yaml
+# Get the current kubeconfig context
+        CONTEXT=$(kubectl config current-context)
+
+        # Login to ArgoCD
+        argocd login ${{ secrets.ARGOCD_SERVER_URL }} \
+          --username ${{ secrets.ARGOCD_USERNAME }} \
+          --password ${{ secrets.ARGOCD_PASSWORD }} \
+          --insecure
+
+        # Add the GKE cluster to ArgoCD
+        argocd cluster add $CONTEXT
+
+    - name: Deploy Kubernetes Manifests via ArgoCD
+      run: |
+        argocd app create my-flask-app \
+          --repo https://github.com/your/repo.git \
+          --path k8s/manifests \
+          --dest-server https://kubernetes.default.svc \
+          --dest-namespace default || \
+        argocd app sync my-flask-app
+```
 
 # Security & Automation Guardrails
 
