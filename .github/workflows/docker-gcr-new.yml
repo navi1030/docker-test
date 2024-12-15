@@ -91,7 +91,7 @@
 
       - name: Register Cluster with ArgoCD
         run: |
-          kubectl config set-context gke_context --cluster=$(kubectl config current-context) --namespace=default
+          kubectl config set-context gke_context --cluster=gke_codimite-assignment-444413_us-central1-a_my-cluster --namespace=default
           argocd cluster add gke_context
 
       - name: Deploy to GKE via ArgoCD
